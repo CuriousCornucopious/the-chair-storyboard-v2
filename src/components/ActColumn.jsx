@@ -1,0 +1,65 @@
+import React from 'react';
+import FrameCard from './FrameCard';
+
+export default function ActColumn({ 
+  act, 
+  onFrameClick, 
+  onStatusChange, 
+  onAddFrame,
+  isExpanded,
+  onToggleExpand
+}) {
+  const generatedCount = act.frames.filter(f => f.status !== 'PENDING').length;
+  const totalCount = act.frames.length;
+  
+  return (
+    <div className={`flex flex-col ${isExpanded ? 'w-96' : 'w-72'} transition-all duration-300`}>
+      {/* Act Header - Clickable for summary toggle */}
+      <div 
+        onClick={onToggleExpand}
+        className="bg-gray-800 rounded-t-lg p-4 cursor-pointer hover:bg-gray-750 transition-colors"
+      >
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="text-lg font-bold text-white">ACT {act.actNum}: {act.actTitle}</h3>
+            <p className="text-xs text-gray-400">{generatedCount}/{totalCount} frames</p>
+          </div>
+          <span className="text-gray-400 text-xl">
+            {isExpanded ? '▼' : '▶'}
+          </span>
+        </div>
+        
+        {/* Summary - shown when expanded */}
+        {isExpanded && act.summary && (
+          <div className="mt-3 pt-3 border-t border-gray-700">
+            <p className="text-sm text-gray-300 italic">{act.summary}</p>
+            {act.mood && (
+              <p className="text-xs text-purple-400 mt-2">🎭 {act.mood}</p>
+            )}
+          </div>
+        )}
+      </div>
+      
+      {/* Frames List */}
+      <div className={`bg-gray-900 rounded-b-lg p-3 overflow-y-auto ${isExpanded ? 'max-h-[600px]' : 'max-h-[200px]'}`}>
+        {act.frames.map((frame, idx) => (
+          <div key={`${frame.frameNum}-${frame.frameSubNum || idx}`} className="mb-3">
+            <FrameCard 
+              frame={frame} 
+              actNum={act.actNum}
+              onClick={onFrameClick}
+              onStatusChange={onStatusChange}
+            />
+          </div>
+        ))}
+        
+        <button
+          onClick={() => onAddFrame(act.actNum)}
+          className="w-full py-2 border-2 border-dashed border-gray-700 rounded-lg text-gray-500 hover:border-gray-500 hover:text-gray-400 transition-colors"
+        >
+          + Add Frame
+        </button>
+      </div>
+    </div>
+  );
+}
