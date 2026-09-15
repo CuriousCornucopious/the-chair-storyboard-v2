@@ -189,6 +189,17 @@ export default function App() {
                 >
                   📦 Export ZIP
                 </button>
+                <button
+                  onClick={() => {
+                    if (confirm('Reset all data? This will clear localStorage and reload defaults.')) {
+                      localStorage.clear();
+                      window.location.reload();
+                    }
+                  }}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-700 text-red-400"
+                >
+                  🔄 Reset Data
+                </button>
               </div>
             </div>
             <label className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg cursor-pointer">
