@@ -55,7 +55,7 @@ const createDefaultStory = () => ({
           notes: 'Use act1/01-fb-listing-text.jpg as overlay reference. This is the listing that brought the buyer to the yard sale.',
           duration: 3,
           transition: 'CUT',
-          imageUrl: 'assets/act1/01-fb-listing-text.jpg'
+          imageUrl: '/assets/act1/01-fb-listing-text.jpg'
         },
         { 
           frameNum: 2, 
@@ -67,7 +67,7 @@ const createDefaultStory = () => ({
           notes: 'Combine act1/02-text-convo-1.jpg and act1/02-text-convo-2.jpg. Shows the conversation that confirmed the chair was free.',
           duration: 3,
           transition: 'CUT',
-          imageUrl: 'assets/act1/02-text-convo-1.jpg'
+          imageUrl: '/assets/act1/02-text-convo-1.jpg'
         },
         { 
           frameNum: 3, 
@@ -79,7 +79,7 @@ const createDefaultStory = () => ({
           notes: 'Reference act1/03-yard-sale-wide.jpg - blue outline shows chair position. This is the pile the chair was hidden in.',
           duration: 4,
           transition: 'CUT',
-          imageUrl: 'assets/act1/03-yard-sale-wide.jpg'
+          imageUrl: '/assets/act1/03-yard-sale-wide.jpg'
         },
         { 
           frameNum: 4, 
@@ -127,7 +127,7 @@ const createDefaultStory = () => ({
           notes: 'Reference act1/05-chair-front.jpg and act1/05-chair-profile.jpg. Real photos of the actual chair.',
           duration: 3,
           transition: 'CUT',
-          imageUrl: 'assets/act1/05-chair-front.jpg'
+          imageUrl: '/assets/act1/05-chair-front.jpg'
         },
         { 
           frameNum: 6, 
@@ -139,7 +139,7 @@ const createDefaultStory = () => ({
           notes: 'Reference act1/06-asset-tag.jpg - actual tag number N1055671. The portal to the past.',
           duration: 3,
           transition: 'CUT',
-          imageUrl: 'assets/act1/06-asset-tag.jpg'
+          imageUrl: '/assets/act1/06-asset-tag.jpg'
         }
       ]
     },
@@ -170,7 +170,7 @@ const createDefaultStory = () => ({
           notes: 'AI generated. SETTING ESTABLISHED - Dolores workplace.',
           duration: 5,
           transition: 'DISSOLVE',
-          imageUrl: 'assets/01-rocketdyne-printing-room.png'
+          imageUrl: '/assets/01-rocketdyne-printing-room.png'
         },
         { 
           frameNum: 9, 
@@ -245,7 +245,7 @@ const createDefaultStory = () => ({
           notes: 'AI generated. Chair becomes rocket. Magic moment.',
           duration: 3,
           transition: 'DISSOLVE',
-          imageUrl: 'assets/03-chair-transformation.png'
+          imageUrl: '/assets/03-chair-transformation.png'
         },
         { 
           frameNum: 15, 
@@ -257,7 +257,7 @@ const createDefaultStory = () => ({
           notes: 'AI generated. The journey begins.',
           duration: 4,
           transition: 'MATCH CUT',
-          imageUrl: 'assets/04-blast-off-1.png'
+          imageUrl: '/assets/04-blast-off-1.png'
         },
         { 
           frameNum: 16, 
@@ -280,7 +280,7 @@ const createDefaultStory = () => ({
           notes: 'AI generated. The chair/dolores become eternal.',
           duration: 5,
           transition: 'HOLD',
-          imageUrl: 'assets/06-saturn-v-constellation.png'
+          imageUrl: '/assets/06-saturn-v-constellation.png'
         }
       ]
     },
@@ -410,7 +410,7 @@ const createDefaultStory = () => ({
           notes: 'AI generated. Channel signature. Full circle - the chair under the stars it helped create.',
           duration: 5,
           transition: 'FADE OUT',
-          imageUrl: 'assets/02-chair-grass-stars.png'
+          imageUrl: '/assets/02-chair-grass-stars.png'
         }
       ]
     }
