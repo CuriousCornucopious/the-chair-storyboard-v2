@@ -20,6 +20,7 @@ export default function App() {
   const [expandedActs, setExpandedActs] = useState({});
   const [showAddModal, setShowAddModal] = useState(false);
   const [addModalType, setAddModalType] = useState(null);
+  const [characterItemExpanded, setCharacterItemExpanded] = useState(false);
   
   const progress = getProgress();
   
@@ -220,33 +221,44 @@ export default function App() {
           onStoryNameChange={handleStoryNameChange}
         />
         
-        {/* Character & Item Boxes */}
+        {/* Character & Item Section - Collapsible */}
         {(story.characters?.length > 0 || story.items?.length > 0) && (
-          <div className="mb-4 flex gap-4">
-            {story.characters?.length > 0 && (
-              <CharacterBox characters={story.characters} />
-            )}
-            {story.items?.length > 0 && (
-              <ItemBox items={story.items} />
+          <div className="mb-4">
+            <button
+              onClick={() => setCharacterItemExpanded(!characterItemExpanded)}
+              className="text-gray-400 text-sm mb-2 flex items-center gap-1 hover:text-white"
+            >
+              {characterItemExpanded ? '▼' : '▶'} Characters & Items
+            </button>
+            
+            {characterItemExpanded && (
+              <>
+                <div className="flex gap-4 mb-2">
+                  {story.characters?.length > 0 && (
+                    <CharacterBox characters={story.characters} />
+                  )}
+                  {story.items?.length > 0 && (
+                    <ItemBox items={story.items} />
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => openAddModal('character')}
+                    className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-lg text-sm"
+                  >
+                    + Add Character
+                  </button>
+                  <button
+                    onClick={() => openAddModal('item')}
+                    className="bg-teal-600 hover:bg-teal-700 text-white px-3 py-1 rounded-lg text-sm"
+                  >
+                    + Add Item
+                  </button>
+                </div>
+              </>
             )}
           </div>
         )}
-        
-        {/* Add Character/Item Buttons */}
-        <div className="mb-4 flex gap-2">
-          <button
-            onClick={() => openAddModal('character')}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-lg text-sm"
-          >
-            + Add Character
-          </button>
-          <button
-            onClick={() => openAddModal('item')}
-            className="bg-teal-600 hover:bg-teal-700 text-white px-3 py-1 rounded-lg text-sm"
-          >
-            + Add Item
-          </button>
-        </div>
         
         {/* ACT Columns with Expandable Summaries */}
         <div className="flex gap-4 overflow-x-auto pb-4">
