@@ -48,11 +48,11 @@ const createDefaultStory = () => ({
         { 
           frameNum: 1, 
           title: 'FB Listing Overlay', 
-          status: 'PENDING', 
-          promptStatus: 'reference',
+          status: 'SHARED', 
+          promptStatus: 'ready',
           prompt: 'Screenshot of Facebook Marketplace listing titled "FREE - Multi-Item Yard Sale". White umbrellas visible in background, white birdcage on stand left, blue dress hanging on house, scattered items on tables (books, decorative items, golf bag), gravel driveway, residential home with garage. Warm afternoon lighting. Listing text visible: "Had yard sell all weekend and everything must go now - FREE!"',
           style: 'Screenshot style, iPhone/phone screen mockup, clean UI frame, warm afternoon light',
-          notes: 'Use act1/01-fb-listing-text.jpg as overlay reference. This is the listing that brought the buyer to the yard sale.',
+          notes: 'Recreated FB Marketplace listing image. Combines listing text overlay with yard sale scene. Chair subtly visible behind birdcage. This IS the listing the buyer saw.',
           duration: 3,
           transition: 'CUT',
           imageUrl: '/act1/01-fb-listing-text.jpg'
