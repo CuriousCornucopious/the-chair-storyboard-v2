@@ -55,7 +55,7 @@ const createDefaultStory = () => ({
           notes: 'Recreated FB Marketplace listing image. Combines listing text overlay with yard sale scene. Chair subtly visible behind birdcage. This IS the listing the buyer saw.',
           duration: 3,
           transition: 'CUT',
-          imageUrl: '/act1/01-fb-listing-text.jpg'
+          imageUrl: '/act1/01-fb-listing-recreated.png'
         },
         { 
           frameNum: 2, 
@@ -89,7 +89,7 @@ const createDefaultStory = () => ({
           promptStatus: 'draft',
           prompt: 'Cluttered yard sale pile with bird cage, white umbrellas, cardboard boxes, various items. Turquoise chair barely visible peeking from behind the bird cage, almost hidden. Golden hour late afternoon light casting long shadows. Wide establishing shot.',
           style: 'Cinematic wide shot, golden hour, warm orange-gold light, lens flare, nostalgic',
-          notes: 'Frame 4a of 3-still reveal sequence. Chair is barely visible, hidden by debris.',
+          notes: 'Frame 4a of 3-still reveal sequence. Chair is barely visible, hidden by debris. Use /act1/04-chair-reveal-slide.png for the slide animation.',
           duration: 2,
           transition: 'HOLD'
         },
