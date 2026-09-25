@@ -16,7 +16,7 @@ const detectPlatform = (url) => {
   return null;
 };
 
-export default function ExpandedFrame({ frame, actNum, onClose, onUpdate }) {
+export default function ExpandedFrame({ frame, actNum, onClose, onUpdate, onDelete }) {
   const [linkInput, setLinkInput] = useState('');
   const [localFrame, setLocalFrame] = useState(frame);
   
@@ -29,7 +29,7 @@ export default function ExpandedFrame({ frame, actNum, onClose, onUpdate }) {
       navigator.clipboard.writeText(localFrame.prompt);
       if (localFrame.status === 'PENDING') {
         setLocalFrame(prev => ({ ...prev, status: 'COPIED' }));
-        onUpdate(actNum, frame.frameNum, { status: 'COPIED' });
+        onUpdate(actNum, frame.frameNum, { status: 'COPIED' }, frame.frameSubNum || null);
       }
     }
   };
@@ -41,7 +41,7 @@ export default function ExpandedFrame({ frame, actNum, onClose, onUpdate }) {
       const base64 = await fileToBase64(file);
       const filename = `frame-ACT${actNum}-frame${frame.frameNum}.png`;
       setLocalFrame(prev => ({ ...prev, status: 'GENERATED', filename, imageUrl: base64 }));
-      onUpdate(actNum, frame.frameNum, { status: 'GENERATED', filename, imageUrl: base64 });
+      onUpdate(actNum, frame.frameNum, { status: 'GENERATED', filename, imageUrl: base64 }, frame.frameSubNum || null);
     }
   };
   
@@ -68,7 +68,7 @@ export default function ExpandedFrame({ frame, actNum, onClose, onUpdate }) {
     const newStatus = newLinks.length > 0 ? 'SHARED' : 
       (localFrame.filename || localFrame.imageUrl) ? 'GENERATED' : 'COPIED';
     setLocalFrame(prev => ({ ...prev, status: newStatus, sharedLinks: newLinks }));
-    onUpdate(actNum, frame.frameNum, { status: newStatus, sharedLinks: newLinks });
+    onUpdate(actNum, frame.frameNum, { status: newStatus, sharedLinks: newLinks }, frame.frameSubNum || null);
   };
   
   const handleFieldChange = (field, value) => {
@@ -76,13 +76,26 @@ export default function ExpandedFrame({ frame, actNum, onClose, onUpdate }) {
   };
   
   const handleBlur = (field) => {
-    onUpdate(actNum, frame.frameNum, { [field]: localFrame[field] });
+    onUpdate(actNum, frame.frameNum, { [field]: localFrame[field] }, frame.frameSubNum || null);
+  };
+
+  const handleDelete = () => {
+    if (confirm(`Delete "${localFrame.title}"? This cannot be undone.`)) {
+      onDelete(actNum, frame.frameNum, frame.frameSubNum || null);
+      onClose();
+    }
   };
   
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
       <div className="bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center p-4 border-b border-gray-700">
+          <button
+            onClick={handleDelete}
+            className="text-red-400 hover:text-red-300 text-sm mr-4"
+          >
+            🗑️ Delete
+          </button>
           <div>
             <input
               type="text"
@@ -91,7 +104,7 @@ export default function ExpandedFrame({ frame, actNum, onClose, onUpdate }) {
               onBlur={() => handleBlur('title')}
               className="text-xl font-bold bg-transparent border-b border-transparent hover:border-gray-600 focus:border-blue-500 outline-none"
             />
-            <p className="text-sm text-gray-400">ACT {actNum} • Frame {frame.frameNum}</p>
+            <p className="text-sm text-gray-400">ACT {actNum} • Frame {frame.frameNum}{frame.frameSubNum ? '.' + frame.frameSubNum : ''}</p>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-white text-2xl">&times;</button>
         </div>

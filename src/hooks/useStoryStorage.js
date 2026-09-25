@@ -427,16 +427,37 @@ export function useStoryStorage() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(story));
   }, [story]);
 
-  const updateFrame = (actNum, frameNum, updates) => {
+  const updateFrame = (actNum, frameNum, updates, frameSubNum = null) => {
     setStory(prev => ({
       ...prev,
       acts: prev.acts.map(act => 
         act.actNum === actNum
           ? { ...act, frames: act.frames.map(frame =>
-              frame.frameNum === frameNum ? { ...frame, ...updates } : frame
+              frame.frameNum === frameNum && (frameSubNum === null || frame.frameSubNum === frameSubNum)
+                ? { ...frame, ...updates } : frame
             )}
           : act
       )
+    }));
+  };
+
+  const deleteFrame = (actNum, frameNum, frameSubNum = null) => {
+    setStory(prev => ({
+      ...prev,
+      acts: prev.acts.map(act => 
+        act.actNum === actNum
+          ? { ...act, frames: act.frames.filter(frame =>
+              !(frame.frameNum === frameNum && (frameSubNum === null || frame.frameSubNum === frameSubNum))
+            )}
+          : act
+      )
+    }));
+  };
+
+  const deleteAct = (actNum) => {
+    setStory(prev => ({
+      ...prev,
+      acts: prev.acts.filter(act => act.actNum !== actNum)
     }));
   };
 
@@ -510,7 +531,7 @@ export function useStoryStorage() {
     return { total, completed, percent: total ? Math.round((completed / total) * 100) : 0 };
   };
 
-  return { story, setStory, updateFrame, insertFrame, insertAct, getProgress };
+  return { story, setStory, updateFrame, deleteFrame, deleteAct, insertFrame, insertAct, getProgress };
 }
 
 export function exportJSON(story) {

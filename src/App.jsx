@@ -11,7 +11,7 @@ import ItemBox from './components/ItemBox';
 import AddItemModal from './components/AddItemModal';
 
 export default function App() {
-  const { story, setStory, updateFrame, insertFrame, insertAct, getProgress } = useStoryStorage();
+  const { story, setStory, updateFrame, deleteFrame, deleteAct, insertFrame, insertAct, getProgress } = useStoryStorage();
   const [selectedFrame, setSelectedFrame] = useState(null);
   const [selectedAct, setSelectedAct] = useState(null);
   const [statusFilter, setStatusFilter] = useState(['PENDING', 'COPIED', 'GENERATED', 'SHARED']);
@@ -28,8 +28,8 @@ export default function App() {
     setExpandedActs(prev => ({ ...prev, [actNum]: !prev[actNum] }));
   };
   
-  const handleStatusChange = useCallback((actNum, frameNum, updates) => {
-    updateFrame(actNum, frameNum, updates);
+  const handleStatusChange = useCallback((actNum, frameNum, updates, frameSubNum = null) => {
+    updateFrame(actNum, frameNum, updates, frameSubNum);
   }, [updateFrame]);
   
   const handleFrameClick = (frame, actNum) => {
@@ -42,8 +42,8 @@ export default function App() {
     setSelectedAct(null);
   };
   
-  const handleUpdateFrame = (actNum, frameNum, updates) => {
-    updateFrame(actNum, frameNum, updates);
+  const handleUpdateFrame = (actNum, frameNum, updates, frameSubNum = null) => {
+    updateFrame(actNum, frameNum, updates, frameSubNum);
     setSelectedFrame(prev => prev ? { ...prev, ...updates } : null);
   };
   
@@ -270,6 +270,8 @@ export default function App() {
               onToggleExpand={() => toggleActExpanded(act.actNum)}
               onFrameClick={(frame) => handleFrameClick(frame, act.actNum)}
               onStatusChange={handleStatusChange}
+              onDeleteFrame={(actNum, frameNum, frameSubNum) => deleteFrame(actNum, frameNum, frameSubNum)}
+              onDeleteAct={(actNum) => deleteAct(actNum)}
               onAddFrame={(actNum) => insertFrame(actNum)}
             />
           ))}
@@ -282,6 +284,10 @@ export default function App() {
             actNum={selectedAct}
             onClose={handleCloseExpanded}
             onUpdate={handleUpdateFrame}
+            onDelete={(actNum, frameNum, frameSubNum) => {
+              deleteFrame(actNum, frameNum, frameSubNum);
+              handleCloseExpanded();
+            }}
           />
         )}
         

@@ -6,6 +6,8 @@ export default function ActColumn({
   onFrameClick, 
   onStatusChange, 
   onAddFrame,
+  onDeleteFrame,
+  onDeleteAct,
   isExpanded,
   onToggleExpand
 }) {
@@ -20,13 +22,27 @@ export default function ActColumn({
         className="bg-gray-800 rounded-t-lg p-4 cursor-pointer hover:bg-gray-750 transition-colors"
       >
         <div className="flex justify-between items-start">
-          <div>
+          <div className="flex-1">
             <h3 className="text-lg font-bold text-white">ACT {act.actNum}: {act.actTitle}</h3>
             <p className="text-xs text-gray-400">{generatedCount}/{totalCount} frames</p>
           </div>
-          <span className="text-gray-400 text-xl">
-            {isExpanded ? '▼' : '▶'}
-          </span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (confirm(`Delete Act ${act.actNum}? This will remove all ${act.frames.length} frames.`)) {
+                  onDeleteAct(act.actNum);
+                }
+              }}
+              className="text-red-400 hover:text-red-300 text-xs"
+              title="Delete Act"
+            >
+              🗑️
+            </button>
+            <span className="text-gray-400 text-xl">
+              {isExpanded ? '▼' : '▶'}
+            </span>
+          </div>
         </div>
         
         {/* Summary - shown when expanded */}
@@ -49,6 +65,11 @@ export default function ActColumn({
               actNum={act.actNum}
               onClick={onFrameClick}
               onStatusChange={onStatusChange}
+              onDelete={() => {
+                if (confirm(`Delete "${frame.title}"?`)) {
+                  onDeleteFrame(act.actNum, frame.frameNum, frame.frameSubNum || null);
+                }
+              }}
             />
           </div>
         ))}

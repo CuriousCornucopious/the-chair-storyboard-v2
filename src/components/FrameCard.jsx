@@ -20,7 +20,7 @@ const platformColors = {
   instagram: '#E1306C'
 };
 
-export default function FrameCard({ frame, actNum, onClick, onStatusChange }) {
+export default function FrameCard({ frame, actNum, onClick, onStatusChange, onDelete }) {
   const colors = statusColors[frame.status] || statusColors.PENDING;
   const promptColor = promptStatusColors[frame.promptStatus] || promptStatusColors.draft;
   
@@ -29,7 +29,7 @@ export default function FrameCard({ frame, actNum, onClick, onStatusChange }) {
     if (frame.prompt) {
       navigator.clipboard.writeText(frame.prompt);
       if (frame.status === 'PENDING') {
-        onStatusChange(actNum, frame.frameNum, { status: 'COPIED' });
+        onStatusChange(actNum, frame.frameNum, { status: 'COPIED' }, frame.frameSubNum || null);
       }
     }
   };
@@ -44,8 +44,13 @@ export default function FrameCard({ frame, actNum, onClick, onStatusChange }) {
         status: 'GENERATED', 
         filename,
         imageUrl: url 
-      });
+      }, frame.frameSubNum || null);
     }
+  };
+
+  const handleDeleteClick = (e) => {
+    e.stopPropagation();
+    if (onDelete) onDelete();
   };
 
   // Format frame number (handle sub-frames like 4.1, 4.2)
@@ -119,6 +124,15 @@ export default function FrameCard({ frame, actNum, onClick, onStatusChange }) {
           Upload
           <input type="file" accept="image/*" className="hidden" onChange={handleUpload} />
         </label>
+        {onDelete && (
+          <button 
+            onClick={handleDeleteClick}
+            className="text-xs bg-red-900 hover:bg-red-800 px-2 py-1 rounded ml-auto"
+            title="Delete Frame"
+          >
+            🗑️
+          </button>
+        )}
       </div>
     </div>
   );
