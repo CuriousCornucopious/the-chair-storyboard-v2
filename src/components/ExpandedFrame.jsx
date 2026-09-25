@@ -1,6 +1,15 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
 const platformColors = {
   youtube: '#FF0000',
   tiktok: '#000000',
