@@ -117,6 +117,9 @@ export default function App() {
     
     const assets = zip.folder('assets');
     
+    // Collect all image data promises
+    const imagePromises = [];
+    
     story.acts.forEach(act => {
       act.frames.forEach(frame => {
         if (frame.imageUrl) {
@@ -129,15 +132,24 @@ export default function App() {
             }
             assets.file(frame.filename || `frame-${act.actNum}-${frame.frameNum}.png`, array);
           } else if (frame.imageUrl.startsWith('blob:')) {
-            fetch(frame.imageUrl)
-              .then(res => res.blob())
-              .then(blob => {
-                assets.file(frame.filename || `frame-${act.actNum}-${frame.frameNum}.png`, blob);
-              });
+            // Add promise to array - will resolve with blob data
+            imagePromises.push(
+              fetch(frame.imageUrl)
+                .then(res => res.blob())
+                .then(blob => {
+                  assets.file(frame.filename || `frame-${act.actNum}-${frame.frameNum}.png`, blob);
+                })
+                .catch(err => console.warn('Failed to fetch blob image:', err))
+            );
           }
         }
       });
     });
+    
+    // Wait for all blob fetches to complete before generating zip
+    if (imagePromises.length > 0) {
+      await Promise.all(imagePromises);
+    }
     
     const content = await zip.generateAsync({ type: 'blob' });
     saveAs(content, `${story.name.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.zip`);

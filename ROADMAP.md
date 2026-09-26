@@ -217,6 +217,29 @@ Located in media/inbound (pending copy to public/assets/):
 
 ---
 
+## KNOWN ISSUES / BACKBURNER (2026-09-26)
+
+### ✅ Frame Reordering - Frame Numbers Now Auto-Update (FIXED 2026-09-26)
+**Issue:** When frames are dragged and dropped to reorder within an act, the `frameNum` did not update automatically.
+**Fix applied:** In `reorderFrames()` function, added `.map((f, idx) => ({ ...f, frameNum: idx + 1 }))` to auto-renumber after reorder.
+**Status:** ✅ FIXED
+
+### 🟡 Export ZIP Missing Blob Images (FIXED 2026-09-26)
+**Issue:** Export ZIP doesn't include blob images because the fetch runs async after zip generation.
+**Fix applied:** Changed to use `Promise.all()` to wait for all blob fetches before generating zip.
+**Status:** ✅ FIXED
+
+### 🟡 Timeline View (Deferred)
+- Horizontal strip at top showing all frames
+- Click to jump
+- Nice-to-have, not critical
+
+### 🟡 Story Progress Bar (Deferred)
+- Visual bar showing completion per act
+- Nice-to-have, not critical
+
+---
+
 # IMPORTANT NOTES FOR FUTURE SELF
 
 - **DO NOT skip the backup phase** — Branch before making changes

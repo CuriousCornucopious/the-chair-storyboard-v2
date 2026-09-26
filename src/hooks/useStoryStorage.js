@@ -534,7 +534,7 @@ export function useStoryStorage() {
                   return [...newFrames, movedFrame, frame];
                 }
                 return [...newFrames, frame];
-              }, [])
+              }, []).map((f, idx) => ({ ...f, frameNum: idx + 1 }))
             }
           : act
       )

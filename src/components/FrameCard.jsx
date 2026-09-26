@@ -1,5 +1,14 @@
 import React from 'react';
 
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
 const statusColors = {
   PENDING: { bg: '#888888', text: '#ffffff' },
   COPIED: { bg: '#007BFF', text: '#ffffff' },
@@ -34,16 +43,16 @@ export default function FrameCard({ frame, actNum, onClick, onStatusChange, onDe
     }
   };
 
-  const handleUpload = (e) => {
+  const handleUpload = async (e) => {
     e.stopPropagation();
     const file = e.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
+      const base64 = await fileToBase64(file);
       const filename = `frame-ACT${actNum}-frame${frame.frameNum}.png`;
       onStatusChange(actNum, frame.frameNum, { 
         status: 'GENERATED', 
         filename,
-        imageUrl: url 
+        imageUrl: base64 
       }, frame.frameSubNum || null);
     }
   };
