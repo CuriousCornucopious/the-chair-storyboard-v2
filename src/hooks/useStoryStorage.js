@@ -520,6 +520,27 @@ export function useStoryStorage() {
     }));
   };
 
+  const reorderFrames = (actNum, fromIndex, toIndex) => {
+    setStory(prev => ({
+      ...prev,
+      acts: prev.acts.map(act =>
+        act.actNum === actNum
+          ? {
+              ...act,
+              frames: act.frames.reduce((newFrames, frame, idx) => {
+                if (idx === fromIndex) return newFrames;
+                if (idx === toIndex) {
+                  const movedFrame = { ...act.frames[fromIndex] };
+                  return [...newFrames, movedFrame, frame];
+                }
+                return [...newFrames, frame];
+              }, [])
+            }
+          : act
+      )
+    }));
+  };
+
   const getProgress = () => {
     let total = 0, completed = 0;
     story.acts.forEach(act => {
@@ -531,7 +552,7 @@ export function useStoryStorage() {
     return { total, completed, percent: total ? Math.round((completed / total) * 100) : 0 };
   };
 
-  return { story, setStory, updateFrame, deleteFrame, deleteAct, insertFrame, insertAct, getProgress };
+  return { story, setStory, updateFrame, deleteFrame, deleteAct, insertFrame, insertAct, reorderFrames, getProgress };
 }
 
 export function exportJSON(story) {

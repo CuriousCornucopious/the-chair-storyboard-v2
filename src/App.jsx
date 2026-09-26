@@ -11,7 +11,7 @@ import ItemBox from './components/ItemBox';
 import AddItemModal from './components/AddItemModal';
 
 export default function App() {
-  const { story, setStory, updateFrame, deleteFrame, deleteAct, insertFrame, insertAct, getProgress } = useStoryStorage();
+  const { story, setStory, updateFrame, deleteFrame, deleteAct, insertFrame, insertAct, reorderFrames, getProgress } = useStoryStorage();
   const [selectedFrame, setSelectedFrame] = useState(null);
   const [selectedAct, setSelectedAct] = useState(null);
   const [statusFilter, setStatusFilter] = useState(['PENDING', 'COPIED', 'GENERATED', 'SHARED']);
@@ -273,6 +273,7 @@ export default function App() {
               onDeleteFrame={(actNum, frameNum, frameSubNum) => deleteFrame(actNum, frameNum, frameSubNum)}
               onDeleteAct={(actNum) => deleteAct(actNum)}
               onAddFrame={(actNum) => insertFrame(actNum)}
+              onReorderFrames={(actNum, fromIndex, toIndex) => reorderFrames(actNum, fromIndex, toIndex)}
             />
           ))}
         </div>

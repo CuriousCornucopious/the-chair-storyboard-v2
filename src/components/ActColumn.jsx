@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FrameCard from './FrameCard';
 
 export default function ActColumn({ 
@@ -8,11 +8,31 @@ export default function ActColumn({
   onAddFrame,
   onDeleteFrame,
   onDeleteAct,
+  onReorderFrames,
   isExpanded,
   onToggleExpand
 }) {
+  const [draggedIndex, setDraggedIndex] = useState(null);
   const generatedCount = act.frames.filter(f => f.status !== 'PENDING').length;
   const totalCount = act.frames.length;
+  
+  const handleDragStart = (e, index) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+  
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+  
+  const handleDrop = (e, toIndex) => {
+    e.preventDefault();
+    if (draggedIndex !== null && draggedIndex !== toIndex) {
+      onReorderFrames(act.actNum, draggedIndex, toIndex);
+    }
+    setDraggedIndex(null);
+  };
   
   return (
     <div className={`flex flex-col ${isExpanded ? 'w-96' : 'w-72'} transition-all duration-300`}>
@@ -57,9 +77,20 @@ export default function ActColumn({
       </div>
       
       {/* Frames List */}
-      <div className={`bg-gray-900 rounded-b-lg p-3 overflow-y-auto ${isExpanded ? 'max-h-[600px]' : 'max-h-[200px]'}`}>
+      <div 
+        className={`bg-gray-900 rounded-b-lg p-3 overflow-y-auto ${isExpanded ? 'max-h-[600px]' : 'max-h-[200px]'}`}
+        onDragOver={(e) => e.preventDefault()}
+      >
         {act.frames.map((frame, idx) => (
-          <div key={`${frame.frameNum}-${frame.frameSubNum || idx}`} className="mb-3">
+          <div 
+            key={`${frame.frameNum}-${frame.frameSubNum || idx}`} 
+            className="mb-3"
+            draggable={true}
+            onDragStart={(e) => handleDragStart(e, idx)}
+            onDragOver={(e) => handleDragOver(e, idx)}
+            onDrop={(e) => handleDrop(e, idx)}
+            style={{ opacity: draggedIndex === idx ? 0.5 : 1 }}
+          >
             <FrameCard 
               frame={frame} 
               actNum={act.actNum}
