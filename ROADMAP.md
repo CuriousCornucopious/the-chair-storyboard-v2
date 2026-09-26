@@ -241,3 +241,4 @@ Located in media/inbound (pending copy to public/assets/):
 
 *Created 2026-09-11 from storyboard-app template*
 *Updated 2026-09-15 - Project rules, 28 frames, Act 1 breakdown, EXECUTION PLAN added*
+
